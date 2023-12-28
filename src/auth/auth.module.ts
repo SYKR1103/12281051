@@ -6,9 +6,17 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { LocalAuthStrategy } from '../common/strategies/local-auth.strategy';
 import { JwtAuthStrategy } from '../common/strategies/jwt-auth.strategy';
+import { RedisModule } from '../redis/redis.module';
+import { EmailModule } from '../email/email.module';
 
 @Module({
-  imports: [UserModule, ConfigModule, JwtModule.register({})],
+  imports: [
+    UserModule,
+    ConfigModule,
+    JwtModule.register({}),
+    RedisModule,
+    EmailModule,
+  ],
   controllers: [AuthController],
   providers: [AuthService, LocalAuthStrategy, JwtAuthStrategy],
 })

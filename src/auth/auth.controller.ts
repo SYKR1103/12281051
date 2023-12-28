@@ -48,4 +48,14 @@ export class AuthController {
   async getAll(@Req() r: RequestWithUser) {
     return r.user;
   }
+
+  @Post('email/send')
+  async sendEmail(@Body('email') email: string) {
+    return this.authService.sendEmail(email);
+  }
+
+  @Post('email/check')
+  async checkEmail(@Body('email') email: string, @Body('code') code: string) {
+    return this.authService.codeCheck(email, code);
+  }
 }
