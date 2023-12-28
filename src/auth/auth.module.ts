@@ -8,6 +8,7 @@ import { LocalAuthStrategy } from '../common/strategies/local-auth.strategy';
 import { JwtAuthStrategy } from '../common/strategies/jwt-auth.strategy';
 import { RedisModule } from '../redis/redis.module';
 import { EmailModule } from '../email/email.module';
+import { NaverAuthStrategy } from '../common/strategies/naver-auth.strategy';
 
 @Module({
   imports: [
@@ -18,6 +19,11 @@ import { EmailModule } from '../email/email.module';
     EmailModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalAuthStrategy, JwtAuthStrategy],
+  providers: [
+    AuthService,
+    LocalAuthStrategy,
+    JwtAuthStrategy,
+    NaverAuthStrategy,
+  ],
 })
 export class AuthModule {}

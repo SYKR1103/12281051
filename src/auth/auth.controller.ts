@@ -8,15 +8,14 @@ import {
   Delete,
   UseGuards,
   Req,
+  HttpStatus,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 import { CreateUserDto } from '../user/dto/create-user.dto';
-import { LoginUserDto } from '../user/dto/login-user.dto';
 import { LocalAuthGuard } from '../common/guards/local-auth.guard';
 import { RequestWithUser } from '../common/interfaces/requestWithUser';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { NaverAuthGuard } from '../common/guards/naver-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -57,5 +56,19 @@ export class AuthController {
   @Post('email/check')
   async checkEmail(@Body('email') email: string, @Body('code') code: string) {
     return this.authService.codeCheck(email, code);
+  }
+
+  @Get('naver')
+  @UseGuards(NaverAuthGuard)
+  async naverLogin() {
+    return HttpStatus.OK;
+  }
+
+  @Get('naver/callback')
+  @UseGuards(NaverAuthGuard)
+  async naverCallbackLogin(@Req() r: RequestWithUser) {
+    const { user } = r;
+    const token = this.authService.generateJwtAccessToken(user.id);
+    return { user, token };
   }
 }
